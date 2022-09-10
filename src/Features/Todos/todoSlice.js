@@ -28,6 +28,7 @@ export const addAsyncTodos = createAsyncThunk(
     }
   }
 );
+
 export const toggleCompleteAsync = createAsyncThunk(
   "todos/toggleCompleteAsync",
   async (payload, { rejectWithValue }) => {
@@ -45,6 +46,7 @@ export const toggleCompleteAsync = createAsyncThunk(
     }
   }
 );
+
 export const deleteAsyncTodos = createAsyncThunk(
   "todos/deleteAsyncTodos",
   async (payload, { rejectWithValue }) => {
@@ -58,8 +60,10 @@ export const deleteAsyncTodos = createAsyncThunk(
     }
   }
 );
+
 const todoSlice = createSlice({
   name: "todos",
+
   initialState: {
     loading: false,
     todos: [
@@ -68,6 +72,7 @@ const todoSlice = createSlice({
     ],
     error: null,
   },
+
   reducers: {
     addTodo: (state, action) => {
       const newTodo = {
@@ -87,13 +92,16 @@ const todoSlice = createSlice({
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
     },
   },
+
   extraReducers: {
     [getAsyncTodos.fulfilled]: (state, action) => {
       return { ...state, todos: action.payload, loading: false, error: null };
     },
+
     [getAsyncTodos.pending]: (state, action) => {
       return { ...state, loading: true, todos: [], error: null };
     },
+
     [getAsyncTodos.rejected]: (state, action) => {
       return {
         ...state,
@@ -102,15 +110,18 @@ const todoSlice = createSlice({
         error: action.error.message,
       };
     },
+
     [addAsyncTodos.fulfilled]: (state, action) => {
       state.todos.push(action.payload);
     },
+
     [toggleCompleteAsync.fulfilled]: (state, action) => {
       const selectedTodo = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       selectedTodo.completed = action.payload.completed;
     },
+
     [deleteAsyncTodos.fulfilled]: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
     },
